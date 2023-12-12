@@ -7,8 +7,10 @@ import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'home' , component: HomeComponent },
-  { path: 'profile' , component: ProfileComponent, canActivate: [AuthGuard, RoleGuard]},
+  { path: 'home' , component: HomeComponent, pathMatch: 'full'},
+  { path: 'home/:param', component: HomeComponent, pathMatch: 'full'},
+  { path: 'profile' , component: ProfileComponent, canActivate: [AuthGuard, RoleGuard], pathMatch: 'full'},
+  { path: 'profile/:param' , component: ProfileComponent, canActivate: [AuthGuard, RoleGuard], pathMatch: 'full'},
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 
