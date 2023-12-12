@@ -6,7 +6,7 @@ import { RoleGuard } from './guard/role.guard';
 import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'home' , component: HomeComponent },
   { path: 'profile' , component: ProfileComponent, canActivate: [AuthGuard, RoleGuard]},
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
