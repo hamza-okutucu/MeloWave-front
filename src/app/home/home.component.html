@@ -1,0 +1,103 @@
+<div class="home-container">
+  <div id="fetchSongsErrorModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="alert alert-danger" role="alert">
+        Failed to fetch default songs.
+      </div>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Research by title" [(ngModel)]="searchQuery" (keyup.enter)="search()">
+    <select [(ngModel)]="selectedArtist">
+      <option value="">Artist</option>
+      <option *ngFor="let artist of artists" [ngValue]="artist">
+        {{ artist }}
+      </option>
+    </select>
+    <select [(ngModel)]="selectedGenre">
+      <option value="">Genre</option>
+      <option *ngFor="let genre of genres" [ngValue]="genre">
+        {{ genre }}
+      </option>
+    </select>
+    <i class="fas fa-search" (click)="search()"></i>
+  </div>
+  
+  <div *ngIf="totalSongs > 0" class="table-container table-responsive">  
+    <table class="table table-dark table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Audio</th>
+          <th scope="col">Title</th>
+          <th scope="col">Artist</th>
+          <th scope="col">Genre</th>
+          <th scope="col">Download</th>
+        </tr>
+      </thead>  
+      <tbody class="center-text">
+        <tr *ngFor="let song of songs">
+          <td>
+            <audio controls [src]="'http://localhost:8080/api/v1/song/stream/' + song.id" type="audio/mp3" preload="none" [volume]="0.1" controlsList="nodownload">
+            </audio>
+          </td>
+          <td>{{ song.title }}</td>
+          <td>{{ song.artist }}</td>
+          <td>{{ song.genre }}</td>
+          <td style="text-align: center; cursor: pointer;">
+            <ng-container *ngIf="isUserLoggedIn(); else loggedOutDownload">
+              <a (click)="downloadSong(song.title, song.id)" >
+                <i class="fa-solid fa-download fa-lg"></i>
+              </a>
+            </ng-container>
+            <ng-template #loggedOutDownload>
+              <i class="fa-solid fa-download fa-lg" placement="top" ngbPopover="Please log in to download."></i>          
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="totalSongs > 0" class="pagination-container">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="isFirstPage()">
+          <a class="page-link" (click)="goToPage(0)">First</a>
+        </li>
+        <li class="page-item" [class.disabled]="!hasPreviousPage()">
+          <a class="page-link" (click)="goToPage(currentPage - 1)">Previous</a>
+        </li>
+      
+        <ng-container *ngIf="currentPage >= 6">
+          <li class="page-item">
+            <a class="page-link" (click)="goToPage(0)">1</a>
+          </li>
+          <li class="page-item disabled">
+            <a class="page-link">...</a>
+          </li>
+        </ng-container>
+
+        <ng-container *ngFor="let page of pageButtons">
+          <li class="page-item" [class.active]="page === currentPage">
+            <a class="page-link" (click)="goToPage(page)">{{ page + 1 }}</a>
+          </li>
+        </ng-container>
+      
+        <ng-container *ngIf="currentPage < totalPages - 5">
+          <li class="page-item disabled">
+            <a class="page-link">...</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" (click)="goToPage(totalPages - 1)">{{ totalPages }}</a>
+          </li>
+        </ng-container>
+      
+        <li class="page-item" [class.disabled]="!hasNextPage()">
+          <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+        </li>
+        <li class="page-item" [class.disabled]="isLastPage()">
+          <a class="page-link" (click)="goToPage(totalPages - 1)">Last</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="profile-container">
+  <form [formGroup]="profileForm" (ngSubmit)="update()">
+    <div div class="form-group">
+      <label for="role">Role : </label>
+      <input type="text" id="role" class="form-control" formControlName="role" readonly>
+    </div>
+  
+    <div class="form-group">
+      <label for="username">Username : </label>
+      <input type="text" id="username" class="form-control" formControlName="username">
+      <div *ngIf="profileForm.controls['username'].invalid && (profileForm.controls['username'].dirty || profileForm.controls['username'].touched)">
+        <div class="alert alert-danger" role="alert" *ngIf="profileForm.controls['username'].hasError('required')">Username is required.</div>
+        <div class="alert alert-danger" role="alert" *ngIf="profileForm.controls['username'].hasError('minlength')">Username must be at least 3 characters long.</div>
+        <div class="alert alert-danger" role="alert" *ngIf="profileForm.controls['username'].hasError('maxlength')">Username cannot be more than 20 characters long.</div>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="password">Password : </label>
+      <div class="input-group">
+        <input
+          type="{{ passwordInputType }}"
+          id="password"
+          class="form-control"
+          formControlName="password"
+        />
+        <div class="input-group-append">
+          <button
+            type="button"
+            class="btn btn-outline-secondary" 
+            (click)="togglePasswordVisibility()"
+          >
+            Show
+          </button>
+        </div>
+      </div>
+      <div *ngIf="profileForm.controls['password'].invalid && (profileForm.controls['password'].dirty || profileForm.controls['password'].touched)">
+        <div class="alert alert-danger" role="alert" *ngIf="profileForm.controls['password'].hasError('required')">Password is required.</div>
+      </div>
+    </div>
+  
+    <div class="button">
+      <button type="submit" class="btn btn-primary btn-lg btn-block">update</button>
+    </div>
+  </form>
+</div>
+
+<div id="fetchUserErrorModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="alert alert-danger" role="alert">
+      Failed to load user's information.
+    </div>
+  </div>
+</div>
+
+<div id="updateErrorModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="alert alert-danger" role="alert">
+      Failed to update.
+    </div>
+  </div>
+</div>
+
+<div id="updateSuccessModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="alert alert-success" role="alert">
+      Successfully updated.
+    </div>
+  </div>
+</div>
+
+<div id="noValueChangedErrorModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="alert alert-danger" role="alert">
+      No values have been changed.
+    </div>
+  </div>
+</div>

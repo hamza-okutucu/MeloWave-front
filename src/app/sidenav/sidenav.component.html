@@ -1,0 +1,108 @@
+<nav>
+  <ul>
+    <li>
+      <a [routerLink]="['/home']" class="logo">
+        <img src="assets/logo.png" alt="">
+        <span class="nav-item">Melo Wave</span>
+      </a>
+    </li>
+
+    <li>
+      <a [routerLink]="['/home']">
+        <i class="fas fa-house"></i>
+        <span class="nav-item">Home</span>
+      </a>
+    </li>
+
+    <li>
+      <ng-container *ngIf="isUserLoggedIn(); else loggedOutTemplate">
+        <a [routerLink]="['/profile']">
+          <i class="fas fa-user"></i>
+          <span class="nav-item">Profile</span>
+        </a>
+      </ng-container>
+      <ng-template #loggedOutTemplate>
+        <a (click)="openModal('loginModal')">
+          <i class="fas fa-user"></i>
+          <span class="nav-item">Login</span>
+        </a>
+      </ng-template>
+    </li>
+
+    <li>
+      <ng-container *ngIf="isUserLoggedIn()">
+        <a [routerLink]="['/']" (click)="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          <span class="nav-item">Logout</span>
+        </a>
+      </ng-container>
+    </li>
+  </ul>
+</nav>
+
+<div id="loginModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header">
+        <h3 class="modal-title text-center w-100"><strong>Connection</strong></h3>
+        <a (click)="closeModal('loginModal')" style="cursor: pointer;">
+          <i class="fa-solid fa-rectangle-xmark fa-lg"></i>
+        </a>
+      </div>
+      <div class="modal-body text-center">
+        <div class="form-group mb-3">
+          <input type="text" class="form-control border-0 border-bottom" placeholder="Username" [(ngModel)]="username" #usernameField="ngModel">
+          <div *ngIf="usernameField.touched && !isUsernameValid()" class="text-danger">Username must be between 3 and 20 characters long.</div>
+        </div>
+        <div class="form-group mb-3">
+          <input type="password" class="form-control border-0 border-bottom" placeholder="Password" [(ngModel)]="password" #passwordField="ngModel">
+          <div *ngIf="passwordField.touched && !isPasswordValid()" class="text-danger">Password cannot be empty.</div>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-dark btn-lg" (click)="register()">Register</button>
+        <button type="button" class="btn btn-dark btn-lg" (click)="login()">Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="usernameTakenModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="alert alert-danger" role="alert">
+      Username {{ username }} already taken.
+    </div>
+  </div>
+</div>
+
+<div id="registrationErrorModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="alert alert-danger" role="alert">
+      Failed to register.
+    </div>
+  </div>
+</div>
+
+<div id="registrationSuccessModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="alert alert-success" role="alert">
+      Successfully registered.
+    </div>
+  </div>
+</div>
+
+<div id="loginErrorModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="alert alert-danger" role="alert">
+      Username and/or password incorrect.
+    </div>
+  </div>
+</div>
+
+<div id="loginSuccessModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="alert alert-success" role="alert">
+      Successfully connected.
+    </div>
+  </div>
+</div>
