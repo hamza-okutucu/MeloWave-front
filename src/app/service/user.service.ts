@@ -1,14 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable, catchError, map, of, throwError } from 'rxjs';
+import { Observable, catchError, of, throwError } from 'rxjs';
 import { User } from '../model/User';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiServerBaseUrl = 'http://51.91.100.173:8080/api/v1';
+  private apiServerBaseUrl = 'http://localhost:8080/api/v1';
 
   constructor(private cookieService: CookieService, private http: HttpClient) {}
 
