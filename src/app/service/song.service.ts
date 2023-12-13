@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SongService {
-  private apiServerBaseUrl = 'http://localhost:8080/api/v1/song';
+  private apiServerBaseUrl = 'https://melowave-tw3q.onrender.com/api/v1/song';
 
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 

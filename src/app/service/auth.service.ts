@@ -9,7 +9,7 @@ import { User } from '../model/User';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiServerBaseUrl = 'http://localhost:8080/api/v1';
+  private apiServerBaseUrl = 'https://melowave-tw3q.onrender.com/api/v1';
 
   constructor(private cookieService: CookieService, private http: HttpClient, private jwtHelperService: JwtHelperService) {}
 
