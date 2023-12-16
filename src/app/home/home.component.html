@@ -38,7 +38,7 @@
       <tbody class="center-text">
         <tr *ngFor="let song of songs">
           <td>
-            <audio controls [src]="'http://51.91.100.173:8080/api/v1/song/stream/' + song.id" type="audio/mp3" preload="none" [volume]="0.1" controlsList="nodownload">
+            <audio controls [src]="'http://51.91.100.173:8443/api/v1/song/stream/' + song.id" type="audio/mp3" preload="none" [volume]="0.1" controlsList="nodownload">
             </audio>
           </td>
           <td>{{ song.title }}</td>
