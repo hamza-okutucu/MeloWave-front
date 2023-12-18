@@ -10,7 +10,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { ProfileComponent } from './profile/profile.component';
-import { UpgradeInsecureRequestsInterceptor } from './service/http.interceptor';
+//import { UpgradeInsecureRequestsInterceptor } from './service/http.interceptor';
 
 @NgModule({
   declarations: [
@@ -31,11 +31,11 @@ import { UpgradeInsecureRequestsInterceptor } from './service/http.interceptor';
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
-    {
+    /*{
       provide: HTTP_INTERCEPTORS,
       useClass: UpgradeInsecureRequestsInterceptor,
       multi: true
-    }
+    }*/
   ],
   bootstrap: [AppComponent]
 })
