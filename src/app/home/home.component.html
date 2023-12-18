@@ -25,27 +25,27 @@
   </div>
   
   <div *ngIf="totalSongs > 0" class="table-container table-responsive">
-    <div *ngIf="loading else songsTable">
-      <div class="spinner-container">
-        <i class="fas fa-spinner fa-spin"></i>
-      </div>
-    </div>
+    <table class="table table-dark table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Audio</th>
+          <th scope="col">Title</th>
+          <th scope="col">Artist</th>
+          <th scope="col">Genre</th>
+          <th scope="col">Download</th>
+        </tr>
+      </thead>  
+      <tbody class="center-text">
+        <tr *ngFor="let song of songs; let i = index">
+          <ng-container *ngIf="loading[i]; else audioPlayer">
+            <div class="spinner-container">
+              <i class="fas fa-spinner fa-spin"></i>
+            </div>
+          </ng-container>
 
-    <ng-template #songsTable>
-      <table class="table table-dark table-striped table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Audio</th>
-            <th scope="col">Title</th>
-            <th scope="col">Artist</th>
-            <th scope="col">Genre</th>
-            <th scope="col">Download</th>
-          </tr>
-        </thead>  
-        <tbody class="center-text">
-          <tr *ngFor="let song of songs">
+          <ng-template #audioPlayer>
             <td>
-              <audio controls [src]="'http://51.91.100.173:8080/api/v1/song/stream/' + song.id" type="audio/mp3" preload="none" [volume]="0.1" controlsList="nodownload">
+              <audio controls [src]="'http://51.91.100.173:8080/api/v1/song/stream/' + song.id" type="audio/mp3" preload="none" [volume]="0.1" controlsList="nodownload" (canplaythrough)="loading[i] = false">
               </audio>
             </td>
             <td>{{ song.title }}</td>
@@ -61,51 +61,51 @@
                 <i class="fa-solid fa-download fa-lg" placement="top" ngbPopover="Please log in to download."></i>          
               </ng-template>
             </td>
-          </tr>
-        </tbody>
-      </table>
+          </ng-template>
+        </tr>
+      </tbody>
+    </table>
 
-      <div *ngIf="totalSongs > 0" class="pagination-container">
-        <ul class="pagination justify-content-center">
-          <li class="page-item" [class.disabled]="isFirstPage()">
-            <a class="page-link" (click)="goToPage(0)">First</a>
+    <div *ngIf="totalSongs > 0" class="pagination-container">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="isFirstPage()">
+          <a class="page-link" (click)="goToPage(0)">First</a>
+        </li>
+        <li class="page-item" [class.disabled]="!hasPreviousPage()">
+          <a class="page-link" (click)="goToPage(currentPage - 1)">Previous</a>
+        </li>
+      
+        <ng-container *ngIf="currentPage >= 6">
+          <li class="page-item">
+            <a class="page-link" (click)="goToPage(0)">1</a>
           </li>
-          <li class="page-item" [class.disabled]="!hasPreviousPage()">
-            <a class="page-link" (click)="goToPage(currentPage - 1)">Previous</a>
+          <li class="page-item disabled">
+            <a class="page-link">...</a>
           </li>
-        
-          <ng-container *ngIf="currentPage >= 6">
-            <li class="page-item">
-              <a class="page-link" (click)="goToPage(0)">1</a>
-            </li>
-            <li class="page-item disabled">
-              <a class="page-link">...</a>
-            </li>
-          </ng-container>
-  
-          <ng-container *ngFor="let page of pageButtons">
-            <li class="page-item" [class.active]="page === currentPage">
-              <a class="page-link" (click)="goToPage(page)">{{ page + 1 }}</a>
-            </li>
-          </ng-container>
-        
-          <ng-container *ngIf="currentPage < totalPages - 5">
-            <li class="page-item disabled">
-              <a class="page-link">...</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" (click)="goToPage(totalPages - 1)">{{ totalPages }}</a>
-            </li>
-          </ng-container>
-        
-          <li class="page-item" [class.disabled]="!hasNextPage()">
-            <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+        </ng-container>
+
+        <ng-container *ngFor="let page of pageButtons">
+          <li class="page-item" [class.active]="page === currentPage">
+            <a class="page-link" (click)="goToPage(page)">{{ page + 1 }}</a>
           </li>
-          <li class="page-item" [class.disabled]="isLastPage()">
-            <a class="page-link" (click)="goToPage(totalPages - 1)">Last</a>
+        </ng-container>
+      
+        <ng-container *ngIf="currentPage < totalPages - 5">
+          <li class="page-item disabled">
+            <a class="page-link">...</a>
           </li>
-        </ul>
-      </div>
-    </ng-template>
+          <li class="page-item">
+            <a class="page-link" (click)="goToPage(totalPages - 1)">{{ totalPages }}</a>
+          </li>
+        </ng-container>
+      
+        <li class="page-item" [class.disabled]="!hasNextPage()">
+          <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+        </li>
+        <li class="page-item" [class.disabled]="isLastPage()">
+          <a class="page-link" (click)="goToPage(totalPages - 1)">Last</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
