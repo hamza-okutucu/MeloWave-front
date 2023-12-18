@@ -25,13 +25,13 @@
   </div>
   
   <div *ngIf="totalSongs > 0" class="table-container table-responsive">
-    <div *ngIf="loading else content">
+    <div *ngIf="loading else songsTable">
       <div class="spinner-container">
         <i class="fas fa-spinner fa-spin"></i>
       </div>
     </div>
 
-    <ng-template #content>
+    <ng-template #songsTable>
       <table class="table table-dark table-striped table-hover">
         <thead>
           <tr>
@@ -64,48 +64,48 @@
           </tr>
         </tbody>
       </table>
+
+      <div *ngIf="totalSongs > 0" class="pagination-container">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="isFirstPage()">
+            <a class="page-link" (click)="goToPage(0)">First</a>
+          </li>
+          <li class="page-item" [class.disabled]="!hasPreviousPage()">
+            <a class="page-link" (click)="goToPage(currentPage - 1)">Previous</a>
+          </li>
+        
+          <ng-container *ngIf="currentPage >= 6">
+            <li class="page-item">
+              <a class="page-link" (click)="goToPage(0)">1</a>
+            </li>
+            <li class="page-item disabled">
+              <a class="page-link">...</a>
+            </li>
+          </ng-container>
+  
+          <ng-container *ngFor="let page of pageButtons">
+            <li class="page-item" [class.active]="page === currentPage">
+              <a class="page-link" (click)="goToPage(page)">{{ page + 1 }}</a>
+            </li>
+          </ng-container>
+        
+          <ng-container *ngIf="currentPage < totalPages - 5">
+            <li class="page-item disabled">
+              <a class="page-link">...</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" (click)="goToPage(totalPages - 1)">{{ totalPages }}</a>
+            </li>
+          </ng-container>
+        
+          <li class="page-item" [class.disabled]="!hasNextPage()">
+            <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+          </li>
+          <li class="page-item" [class.disabled]="isLastPage()">
+            <a class="page-link" (click)="goToPage(totalPages - 1)">Last</a>
+          </li>
+        </ul>
+      </div>
     </ng-template>
-
-    <div *ngIf="totalSongs > 0" class="pagination-container">
-      <ul class="pagination justify-content-center">
-        <li class="page-item" [class.disabled]="isFirstPage()">
-          <a class="page-link" (click)="goToPage(0)">First</a>
-        </li>
-        <li class="page-item" [class.disabled]="!hasPreviousPage()">
-          <a class="page-link" (click)="goToPage(currentPage - 1)">Previous</a>
-        </li>
-      
-        <ng-container *ngIf="currentPage >= 6">
-          <li class="page-item">
-            <a class="page-link" (click)="goToPage(0)">1</a>
-          </li>
-          <li class="page-item disabled">
-            <a class="page-link">...</a>
-          </li>
-        </ng-container>
-
-        <ng-container *ngFor="let page of pageButtons">
-          <li class="page-item" [class.active]="page === currentPage">
-            <a class="page-link" (click)="goToPage(page)">{{ page + 1 }}</a>
-          </li>
-        </ng-container>
-      
-        <ng-container *ngIf="currentPage < totalPages - 5">
-          <li class="page-item disabled">
-            <a class="page-link">...</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" (click)="goToPage(totalPages - 1)">{{ totalPages }}</a>
-          </li>
-        </ng-container>
-      
-        <li class="page-item" [class.disabled]="!hasNextPage()">
-          <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
-        </li>
-        <li class="page-item" [class.disabled]="isLastPage()">
-          <a class="page-link" (click)="goToPage(totalPages - 1)">Last</a>
-        </li>
-      </ul>
-    </div>
   </div>
 </div>

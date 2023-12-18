@@ -61,6 +61,7 @@ export class HomeComponent {
         this.selectedArtist !== this.lastSelectedArtist ||
         this.selectedGenre !== this.lastSelectedGenre
     ) {
+      this.loading = true;
       this.lastSearchQuery = this.searchQuery;
       this.lastSelectedArtist = this.selectedArtist;
       this.lastSelectedGenre = this.selectedGenre;
@@ -71,7 +72,8 @@ export class HomeComponent {
           .getSongsByParameters(this.currentPage, this.searchQuery, this.selectedArtist, this.selectedGenre)
           .subscribe(
             (songs: Song[]) => this.songs = songs,
-            error => this.openModal('fetchSongsErrorModal')
+            error => this.openModal('fetchSongsErrorModal'),
+            () => this.loading = false
           );
 
       this.songService
@@ -93,7 +95,7 @@ export class HomeComponent {
         .subscribe(
           (songs: Song[]) => this.songs = songs,
           error => this.openModal('fetchSongsErrorModal'),
-          () => this.loading = true
+          () => this.loading = false
         );
 
     this.songService
@@ -176,13 +178,15 @@ export class HomeComponent {
   }
   
   onPageChange(page: number): void {
+    this.loading = true;
     this.currentPage = page;
 
     this.songService
         .getSongsByParameters(this.currentPage, this.searchQuery, this.selectedArtist, this.selectedGenre)
         .subscribe(
           (songs: Song[]) => this.songs = songs,
-          error => this.openModal('fetchSongsErrorModal')
+          error => this.openModal('fetchSongsErrorModal'),
+          () => this.loading = false
         );
   }
 
