@@ -61,7 +61,7 @@ export class HomeComponent {
         .subscribe(
           (songs: Song[]) => {
             this.songs = songs;
-            this.loading = Array(this.songs.length).fill(false);
+            this.loading = Array(this.songs.length).fill(true);
           },
           error => this.openModal('fetchSongsErrorModal')
         );
