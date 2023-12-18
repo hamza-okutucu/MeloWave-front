@@ -116,3 +116,10 @@ select:hover,
   background-color: rgb(29, 29, 29);
   border-color: #000000;
 }
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3vh;
+}

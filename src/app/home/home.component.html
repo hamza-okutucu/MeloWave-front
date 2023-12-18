@@ -24,39 +24,47 @@
     <i class="fas fa-search" (click)="search()"></i>
   </div>
   
-  <div *ngIf="totalSongs > 0" class="table-container table-responsive">  
-    <table class="table table-dark table-striped table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Audio</th>
-          <th scope="col">Title</th>
-          <th scope="col">Artist</th>
-          <th scope="col">Genre</th>
-          <th scope="col">Download</th>
-        </tr>
-      </thead>  
-      <tbody class="center-text">
-        <tr *ngFor="let song of songs">
-          <td>
-            <audio controls [src]="'http://51.91.100.173:8080/api/v1/song/stream/' + song.id" type="audio/mp3" preload="none" [volume]="0.1" controlsList="nodownload">
-            </audio>
-          </td>
-          <td>{{ song.title }}</td>
-          <td>{{ song.artist }}</td>
-          <td>{{ song.genre }}</td>
-          <td style="text-align: center; cursor: pointer;">
-            <ng-container *ngIf="isUserLoggedIn(); else loggedOutDownload">
-              <a (click)="downloadSong(song.title, song.id)" >
-                <i class="fa-solid fa-download fa-lg"></i>
-              </a>
-            </ng-container>
-            <ng-template #loggedOutDownload>
-              <i class="fa-solid fa-download fa-lg" placement="top" ngbPopover="Please log in to download."></i>          
-            </ng-template>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div *ngIf="totalSongs > 0" class="table-container table-responsive">
+    <div *ngIf="loading else content">
+      <div class="spinner-container">
+        <i class="fas fa-spinner fa-spin"></i>
+      </div>
+    </div>
+
+    <ng-template #content>
+      <table class="table table-dark table-striped table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Audio</th>
+            <th scope="col">Title</th>
+            <th scope="col">Artist</th>
+            <th scope="col">Genre</th>
+            <th scope="col">Download</th>
+          </tr>
+        </thead>  
+        <tbody class="center-text">
+          <tr *ngFor="let song of songs">
+            <td>
+              <audio controls [src]="'http://51.91.100.173:8080/api/v1/song/stream/' + song.id" type="audio/mp3" preload="none" [volume]="0.1" controlsList="nodownload">
+              </audio>
+            </td>
+            <td>{{ song.title }}</td>
+            <td>{{ song.artist }}</td>
+            <td>{{ song.genre }}</td>
+            <td style="text-align: center; cursor: pointer;">
+              <ng-container *ngIf="isUserLoggedIn(); else loggedOutDownload">
+                <a (click)="downloadSong(song.title, song.id)" >
+                  <i class="fa-solid fa-download fa-lg"></i>
+                </a>
+              </ng-container>
+              <ng-template #loggedOutDownload>
+                <i class="fa-solid fa-download fa-lg" placement="top" ngbPopover="Please log in to download."></i>          
+              </ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-template>
 
     <div *ngIf="totalSongs > 0" class="pagination-container">
       <ul class="pagination justify-content-center">

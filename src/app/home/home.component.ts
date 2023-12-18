@@ -10,11 +10,7 @@ import { HttpResponse } from '@angular/common/http';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  isLoggedIn(): any {
-    return false;
-  }
-  addFavorite(_t52: Song) {
-  }
+
   searchQuery: string;
   selectedArtist: string;
   selectedGenre: string;
@@ -28,6 +24,7 @@ export class HomeComponent {
   songs: Song[];
   artists: string[];
   genres: string[];
+  loading: boolean;
 
   private lastSearchQuery: string;
   private lastSelectedArtist: string;
@@ -50,6 +47,7 @@ export class HomeComponent {
     this.totalPages = 0;
     this.visibleButtons = 10;
     this.pageButtons = [];
+    this.loading = false;
   }
 
   ngOnInit() {
@@ -94,7 +92,8 @@ export class HomeComponent {
         .getSongsByParameters(this.currentPage, this.searchQuery, this.selectedArtist, this.selectedGenre)
         .subscribe(
           (songs: Song[]) => this.songs = songs,
-          error => this.openModal('fetchSongsErrorModal')
+          error => this.openModal('fetchSongsErrorModal'),
+          () => this.loading = true
         );
 
     this.songService
