@@ -72,7 +72,6 @@ export class SidenavComponent {
     const secureFlag = window.location.protocol === 'https:';
   
     this.cookieService.set(cookieName, token, expirationDate, '/', '', secureFlag, 'Strict');
-    //this.cookieService.set(cookieName, token, expirationDate, '/', '', true, 'Strict');
   }
 
   private getExpirationFromToken(token: string): number {

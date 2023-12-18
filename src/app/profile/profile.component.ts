@@ -89,7 +89,9 @@ export class ProfileComponent {
     const expiration = this.getExpirationFromToken(token);
     const expirationDate = new Date(expiration * 1000);
 
-    this.cookieService.set(cookieName, token, expirationDate, '/', '', true, 'Strict');
+    const secureFlag = window.location.protocol === 'https:';
+  
+    this.cookieService.set(cookieName, token, expirationDate, '/', '', secureFlag, 'Strict');
   }
 
   private getExpirationFromToken(token: string): number {
