@@ -38,31 +38,29 @@
       </thead>  
       <tbody class="center-text">
         <tr *ngFor="let song of songs; let i = index">
-          <ng-container *ngIf="loading[i]; else audioPlayer">
+          <!--<ng-container *ngIf="loading[i]; else audioPlayer">
             <div class="spinner-container">
               <i class="fas fa-spinner fa-spin"></i>
             </div>
-          </ng-container>
+          </ng-container>-->
           
-          <ng-template #audioPlayer>
-            <td>
-              <audio controls [src]="'http://51.91.100.173:8080/api/v1/song/stream/' + song.id" type="audio/mp3" preload="none" [volume]="0.1" controlsList="nodownload" (canplaythrough)="loading[i] = false">
-              </audio>
-            </td>
-            <td>{{ song.title }}</td>
-            <td>{{ song.artist }}</td>
-            <td>{{ song.genre }}</td>
-            <td style="text-align: center; cursor: pointer;">
-              <ng-container *ngIf="isUserLoggedIn(); else loggedOutDownload">
-                <a (click)="downloadSong(song.title, song.id)" >
-                  <i class="fa-solid fa-download fa-lg"></i>
-                </a>
-              </ng-container>
-              <ng-template #loggedOutDownload>
-                <i class="fa-solid fa-download fa-lg" placement="top" ngbPopover="Please log in to download."></i>          
-              </ng-template>
-            </td>
-          </ng-template>
+          <td>
+            <audio controls [src]="'http://51.91.100.173:8080/api/v1/song/stream/' + song.id" type="audio/mp3" preload="none" [volume]="0.1" controlsList="nodownload">
+            </audio>
+          </td>
+          <td>{{ song.title }}</td>
+          <td>{{ song.artist }}</td>
+          <td>{{ song.genre }}</td>
+          <td style="text-align: center; cursor: pointer;">
+            <ng-container *ngIf="isUserLoggedIn(); else loggedOutDownload">
+              <a (click)="downloadSong(song.title, song.id)" >
+                <i class="fa-solid fa-download fa-lg"></i>
+              </a>
+            </ng-container>
+            <ng-template #loggedOutDownload>
+              <i class="fa-solid fa-download fa-lg" placement="top" ngbPopover="Please log in to download."></i>          
+            </ng-template>
+          </td>
         </tr>
       </tbody>
     </table>
