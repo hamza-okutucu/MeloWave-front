@@ -24,7 +24,7 @@ export class HomeComponent {
   songs: Song[];
   artists: string[];
   genres: string[];
-  loading: boolean[];
+  loading: boolean;
 
   private lastSearchQuery: string;
   private lastSelectedArtist: string;
@@ -47,6 +47,7 @@ export class HomeComponent {
     this.totalPages = 0;
     this.visibleButtons = 10;
     this.pageButtons = [];
+    this.loading = false;
   }
 
   ngOnInit() {
@@ -56,16 +57,14 @@ export class HomeComponent {
   }
 
   loadSongs() {
+    this.loading = true;
+
     this.songService
         .getSongsByParameters(this.currentPage, this.searchQuery, this.selectedArtist, this.selectedGenre)
         .subscribe(
-          (songs: Song[]) => {
-            this.songs = songs;
-            this.loading = Array(this.songs.length).fill(true);
-            console.log("OK");
-          },
+          (songs: Song[]) => this.songs = songs,
           error => this.openModal('fetchSongsErrorModal')
-        );
+        ).add(() => this.loading = false);
 
     this.songService
         .countSongsByParameters(this.searchQuery, this.selectedArtist, this.selectedGenre)
@@ -84,6 +83,8 @@ export class HomeComponent {
         this.selectedArtist !== this.lastSelectedArtist ||
         this.selectedGenre !== this.lastSelectedGenre
     ) {
+      this.loading = true;
+
       this.lastSearchQuery = this.searchQuery;
       this.lastSelectedArtist = this.selectedArtist;
       this.lastSelectedGenre = this.selectedGenre;
@@ -93,12 +94,9 @@ export class HomeComponent {
       this.songService
           .getSongsByParameters(this.currentPage, this.searchQuery, this.selectedArtist, this.selectedGenre)
           .subscribe(
-            (songs: Song[]) => {
-              this.songs = songs;
-              this.loading = Array(this.songs.length).fill(true);
-            },
+            (songs: Song[]) => this.songs = songs,
             error => this.openModal('fetchSongsErrorModal')
-          );
+          ).add(() => this.loading = false);
 
       this.songService
           .countSongsByParameters(this.searchQuery, this.selectedArtist, this.selectedGenre)
@@ -181,17 +179,15 @@ export class HomeComponent {
   }
   
   onPageChange(page: number): void {
+    this.loading = true;
     this.currentPage = page;
 
     this.songService
         .getSongsByParameters(this.currentPage, this.searchQuery, this.selectedArtist, this.selectedGenre)
         .subscribe(
-          (songs: Song[]) => {
-            this.songs = songs;
-            this.loading = Array(this.songs.length).fill(true);
-          },
+          (songs: Song[]) => this.songs = songs,
           error => this.openModal('fetchSongsErrorModal')
-        );
+        ).add(() => this.loading = false);
   }
 
   hasNextPage(): boolean {
