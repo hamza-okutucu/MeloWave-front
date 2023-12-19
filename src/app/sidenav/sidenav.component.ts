@@ -48,7 +48,6 @@ export class SidenavComponent {
           }, 5000);
         },
         (error: HttpErrorResponse) => {
-          console.log(error.status);
           if (error.status === 409) this.openModal('usernameTakenModal');
           else this.openModal('registrationErrorModal');
         }

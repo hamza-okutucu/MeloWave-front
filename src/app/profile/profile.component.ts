@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 export class ProfileComponent {
   user: User;
   profileForm: FormGroup;
-  passwordInputType = 'password';
+  passwordInputType: string;
 
   constructor(
     private userService: UserService,
@@ -28,6 +28,7 @@ export class ProfileComponent {
       username: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
       password: new FormControl('', Validators.required)
     });
+    this.passwordInputType = 'password';
   }
 
   ngOnInit() {
@@ -80,7 +81,10 @@ export class ProfileComponent {
                 this.closeModal('updateSuccessModal');
               }, 5000);
             },
-            (error) => this.openModal('updateErrorModal')
+            (error) => {
+              if (error.status === 409) this.openModal('usernameTakenModal');
+              else this.openModal('updateErrorModal');
+            }
           );
     }
   }
