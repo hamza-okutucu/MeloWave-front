@@ -118,8 +118,11 @@ select:hover,
 }
 
 .spinner-container {
+  color:darkgray;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 12vh;
+  width: auto;
+  height: 10vh;
+  font-size: 2.2vw;
 }
