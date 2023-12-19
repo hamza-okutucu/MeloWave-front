@@ -62,6 +62,7 @@ export class HomeComponent {
           (songs: Song[]) => {
             this.songs = songs;
             this.loading = Array(this.songs.length).fill(true);
+            console.log("OK");
           },
           error => this.openModal('fetchSongsErrorModal')
         );
