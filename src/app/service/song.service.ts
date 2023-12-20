@@ -8,16 +8,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SongService {
-  private apiServerBaseUrl = 'http://51.91.100.173:8080/api/v1/song';
+  private apiServerBaseUrl = 'http://51.91.100.173:8080';
 
   constructor(private http: HttpClient, private cookieService: CookieService) {}
-
-  public getSongs(): Observable<Song[]> {
-    const jwt = this.cookieService.get('access_token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${jwt}`);
-
-    return this.http.get<Song[]>(`${this.apiServerBaseUrl}/all`, { headers });
-  }
 
   public getSongById(id: number): Observable<Song> {
     return this.http.get<Song>(`${this.apiServerBaseUrl}/find/${id}`);
