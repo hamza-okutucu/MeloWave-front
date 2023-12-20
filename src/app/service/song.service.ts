@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SongService {
-  private apiServerBaseUrl = 'http://51.91.100.173:8080';
+  private apiServerBaseUrl = 'http://51.91.100.173:8080/song';
 
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
